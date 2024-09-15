@@ -1,6 +1,6 @@
-def summary_menu(dict=None):
+def delete_menu(dict=None):
     while True:
-        #print(summary_prompt)
+        #print(delete_prompt)
         opt = input('Enter an option: ')
 
         #Notification error if opt is a string
@@ -9,16 +9,13 @@ def summary_menu(dict=None):
         except:
             print('Wrong value! Input must be a number')
         
-        #Employee summary menu
+        #Update employee menu
         if opt == 1:
-            print('Employee summary')
+            print('Delete employee')
 
-        #Filter summary 
-        elif opt == 2:
-            print('Filter summary')
-
+        
         #Go back to main menu
-        elif opt == 3:
+        elif opt == 2:
             break
         
         else:
