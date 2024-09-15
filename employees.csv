@@ -1,0 +1,31 @@
+id,name,age,gender,job title,department,salary,experience
+1001,Josh Allen,30,M,Senior Staff,Production,50000,5
+1002,Laura Kennedy,25,F,Staff,Marketing,35000,2
+1003,Tyler Crosby,35,M,Manager,IT,120000,10
+1004,Michael Scott,32,M,Engineer,IT,85000,8
+1005,David Williams,27,M,Staff,Sales,50000,3
+1006,Alex Kim,29,M,Engineer,IT,40000,3
+1007,Michelle Tomlinson,31,F,Senior Staff,Marketing,50000,4
+1008,James Smith,45,M,Manager,Production,92000,18
+1009,Angelina Lee,38,F,Manager,Marketing,80000,10
+1010,Bella Washington,24,F,Staff,HR,32000,1
+1011,Wendy Adams,29,F,Senior Staff,HR,45000,5
+1012,Tom Benson,40,M,Senior Engineer,IT,98000,12
+1013,Michael Brady,39,M,Engineer,IT,87000,9
+1014,Katie Brown,32,F,Senior Analyst,Finance,78000,4
+1015,Karen Scott,34,F,Manager,HR,80000,10
+1016,Natasha Jordan,F,28,Analyst,Marketing,48000,5
+1017,Amy Wilde,F,48,Manager,Finance,130000,24
+1018,Farah Anissa,F,36,Senior Analyst,Finance,75000,10
+1019,Muhammad Idris,M,23,Staff,Production,29000,1
+1020,Jason Chen,M,24,Engineer,IT,35000,2
+1021,Jamie Jefferson,M,26,Staff,HR,30000,4
+1022,Melanie Anderson,F,24,Analyst,Finance,28000,1
+1023,Tessa Bailey,F,45,Senior Staff,Sales,74000,17
+1024,Eva Madison,F,38,Senior Engineer,IT,88000,12
+1025,Hailey Silver,F,40,Senior Analyst,Finance,70000,15
+1026,Julia Foster,F,43,Senior Analyst,Marketing,68000,14
+1027,Kevin Jones,M,52,Manager,Sales,100000,26
+1028,Irene Garner,F,34,Senior Staff,Sales,65000,10
+1029,Jennifer Li,F,31,Senior Engineer,IT,58000,7
+1030,Diana Torres,F,27,Analyst,Marketing,41000,4
