@@ -40,6 +40,7 @@ Add Employee Menu
 2. Back to Main Menu
 '''
 
+#Add Menu Function
 def add_menu(emp_dict):
     employees = emp_dict
   
@@ -54,72 +55,70 @@ def add_menu(emp_dict):
         except:
             print('Wrong value! Input must be a number')
         
-        ##########################################################
-        #Input Employee by ID
+        #Add employee menu
         if opt == 1:
-            print('Add employee by ID')
+            try:
+                id = int(input('Input Employee ID\n(enter 0 to quit): '))
+            except:
+                print('ID must be a number!')
+                continue
 
-            while True:
-                try:
-                    id = int(input('Insert employee ID (0 to quit): '))
-                except:
-                    print('Please enter a number')
-                    
-                if id == 0:
-                    break
+            if id == 0:
+                break
 
-                if id not in list(employees.keys()):
-                    name = input('Enter employee name: ').title()
-                    for k, v in employees.items():
-                        if name == v[0]:
-                            print('There is an employee with this name. Is this the same person?')
-                            #print(header)
-                            #Add spacing
-                            print(str(k), ' '.join(list(str(emp) for emp in employees[k])))
-                            resp = input('y/n: ')
-                            if resp == 'y':
-                                print('The employee is already in the database.')
-                                break
-                            # else:
-                            #     continue
+            elif id in employees.keys():
+                print('ID already existed!')
+
+            else:
+                name = input('Input employee name: ')
+                #Check if there is another employee with the same name
+                #If it's a different person, continue adding employee data
+                for k, v in employees.items():
+                    if name.title() == v[0]:
+                        print('There is an employee with this name. Is this the same person?')
+                        #HEADERRRRRR
+                        print(str(k), ' '.join(list(str(emp) for emp in employees[k])))
+
+                        #Confirmation if it's the same person or not
+                        #y = go back to main add menu
+                        resp = input('y/n?: ')
+                        if resp == 'y':
+                            print('The employee is already in the database.\n')
+                            break
+                        elif resp != 'n':
+                            print('Wrong input!')
+                            break
+                    else:
+                        age = int(input('Enter employee age: '))
+                        gender = input('Enter employee gender (M/F): ').title()
+                        title = input('Enter employee job title: ').title()
+                        dept = input('Enter employee job department: ')
+                        salary = int(input('Enter employee annual salary ($): '))
+                        exp = int(input('Enter number of employee\'s experience with the company: ')
+)
+                        #Confirmation to add employee data
+                        print('ID', 'Name', 'Age', 'Gender', 'Title', 'Dept', 'Salary', 'Exp')
+                        print(id, name, age, gender, title, dept, salary, exp) 
+                        conf = input('Confirm to input employee data to database (y/n): ')
+                        if conf == 'y':
+                        #Insert employee data to dictionary
+                            employees[id] = [name, age, gender, title, dept, salary, exp]
+
+                            #Display new employee data
+                            print('Employee added to database')
+                            continue
                         
-                        else:
-                            age = input('Enter employee age: ')
-                            gender = input('Enter employee gender (M/F): ').title()
-                            title = input('Enter employee job title: ').title()
-                            dept = input('Enter employee job department: ')
-                            salary = input('Enter employee annual salary ($): ')
-                            exp = input('Enter number of employee\'s experience with the company: ')
 
-                            #Confirmation to add employee data
-                            print('ID', 'Name', 'Age', 'Gender', 'Title', 'Dept', 'Salary', 'Exp')
-                            print(id, name, age, gender, title, dept, salary, exp) 
-                            conf = input('Confirm to input employee data to database (y/n): ')
-                            if conf == 'y':
-                            #Insert employee data to dictionary
-                                employees[id] = [name, age, gender, title, dept, salary, exp]
+                        else: 
+                            break
 
-                                #Display new employee data
-                                print('Employee added to database\n')
-                                break
 
-                            else: 
-                                break
-  
-    
-
-                #Notification if ID already exists    
-                else:
-                    print('Employee ID already exists! Enter another value')
-                    continue
-            
-
-        #########################################################
         #Go back to main menu
         elif opt == 2:
             break
         
-        else:
+        #Notification if input value is not on the menu
+        elif opt == 0 or opt >2 : 
             print('Wrong value! Enter an option from the menu: ')
 
 add_menu(emp_dict)

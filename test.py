@@ -1,4 +1,5 @@
 emp_dict = {
+
        1001: ['Josh Allen', 'M', 30, 'Senior Staff', 'Production', 50000, 5], 
        1002: ['Laura Kennedy', 'F', 25, 'Staff', 'Marketing', 35000, 2], 
        1003: ['Tyler Crosby', 'M', 35, 'Manager', 'IT', 120000, 10], 
@@ -34,14 +35,17 @@ emp_dict = {
 
 
 
-for key, val in emp_dict.items():
-    dept = val[4]
-    salary = val[5]
-    if dept == 'Production':
-        emp_dict[key][5] = int(salary * 1.1)
+# for key, val in emp_dict.items():
+#     dept = val[4]
+#     salary = val[5]
+#     if dept == 'Production':
+#         emp_dict[key][5] = int(salary * 1.1)
 
 print(emp_dict)
-
+emp_keys = [k for k in emp_dict.keys()]
+print(emp_keys)
+emp_gender = [v[1] for v in emp_dict.values()]
+print(emp_gender)
 # for key, val in emp_dict.items():
 #     salary = val[5]
 #     dept = val[4]
@@ -61,8 +65,8 @@ print(emp_dict)
 #     print(col[0], col[1])
 
 
-for k, val in emp_dict.items():
-    vals = list(val)
-    f = list(filter(lambda x: x == 'F', vals))
-    print(f)
+# for k, val in emp_dict.items():
+#     vals = list(val)
+#     f = list(filter(lambda x: x == 'F', vals))
+#     print(f)
     

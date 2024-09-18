@@ -38,8 +38,8 @@ Update Employee Menu
 2. Update Employee Salary (per Department)
 3. Back to Main Menu
 '''
-cols = [[0, 'Name'], [1, 'Gender'], [2, 'Age'], [3, 'Job Title'], 
-        [4, 'Department'], [5, 'Salary'], [6, 'Experience'], [7, 'Go back to previous menu']]
+# cols = [[0, 'Name'], [1, 'Gender'], [2, 'Age'], [3, 'Job Title'], 
+#         [4, 'Department'], [5, 'Salary'], [6, 'Experience'], [7, 'Go back to previous menu']]
 
 def update_menu(emp_dict):
     employees = emp_dict
@@ -63,13 +63,14 @@ def update_menu(emp_dict):
                 continue
 
             #Display current employee data
-            if id in list(employees.keys()):
+            if id in employees.keys():
                 #CHANGE HEADERS
                 print(str(id), ' '.join(list(str(emp) for emp in employees[id])))
 
                 while True:
                     #Printing the options of employee data (columns) to choose
-                    for col in cols:
+                    columns = ['Name', 'Gender', 'Age', 'Job Title', 'Department', 'Salary', 'Experience', 'Go back to previous menu']
+                    for col in list(enumerate(columns, 1)):
                         print(f'{col[0]}. {col[1]}')
 
                     try:
@@ -78,49 +79,50 @@ def update_menu(emp_dict):
                         print('Wrong value! Must be a number')
                         continue
 
-                    if opt > 7:
+                    if opt > 8:
                         print('Choose the number from the menu!')
                         continue
 
-                    if opt == 7:
+                    if opt == 8:
                         break
 
-                    print(cols[opt][1])
+                    print(columns[opt-1])
                     data = input('Input the new data: ')
 
                     #Confirmation of adding data
                     print('Current data:')
                     #CHANGE HEADERS
                     print(str(id), ' '.join(list(str(emp) for emp in employees[id])))
-                    print(f'Confirm the change of {cols[opt][1]} value to {data}')
+                    print(f'Confirm the change of {columns[opt-1]} value to {data}')
                     conf = input('y/n: ')
                     if conf == 'y':
                         
                         #Change the data according to the column chosen
                         #Name column
-                        if opt == 0:
-                            employees[id][0] = data
+                        if opt == 1:
+                            employees[id][0] = data.title()
                         #Gender column
-                        elif opt == 1:
-                            employees[id][1] = data
-                        #Age column -> change to int
                         elif opt == 2:
+                            employees[id][1] = data.title()
+                        #Age column -> change to int
+                        elif opt == 3:
                             employees[id][2] = int(data)
                         #Job title column
-                        elif opt == 3:
-                            employees[id][3] = data
-                        #Department column
                         elif opt == 4:
-                            employees[id][4] = data
-                        #Salary column -> change to int
+                            employees[id][3] = data.title()
+                        #Department column
                         elif opt == 5:
+                            employees[id][4] = data.title() if len(data) > 2 else data.upper()
+                        #Salary column -> change to int
+                        elif opt == 6:
                             employees[id][5] = int(data)
                         #Experience column -> change to int
-                        elif opt == 6:
+                        elif opt == 7:
                             employees[id][6] = int(data)
 
                         #CHANGE HEADERS
                         print(str(id), ' | '.join(list(str(emp) for emp in employees[id])))
+                        break
 
                     else:
                         break

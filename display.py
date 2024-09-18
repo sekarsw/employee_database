@@ -165,7 +165,9 @@ def display_menu(emp_dict = None):
 
                 else:
                     break
-            print(filtered)
+            for data in filtered:
+                print(data)
+            #print(filtered)
         
         #-------------------------------------------------------------------------------------
         #Go back to Main Menu
