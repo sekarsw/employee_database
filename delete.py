@@ -61,7 +61,7 @@ def delete_menu(emp_dict):
             except:
                 print('ID needs to be a number')
 
-            if id in list(employees.keys()):
+            if id in employees.keys():
                 #Display data
                 '''Need string formatting'''
                 print(str(id), ' '.join(list(str(emp) for emp in employees[id])))

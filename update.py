@@ -124,17 +124,18 @@ def update_menu(emp_dict):
 
                     else:
                         break
-                
+
+           #Notification if ID doesn't exist     
             else:
                 print('ID doesn\'t exist!')
                 continue
         
-
+        #------------------------------------------------------------------------------------
         #Update employee salary data per department
         #Case: Raise applied to all employees in a department
         elif opt == 2: 
             departments = [[0, 'Finance'], [1, 'Marketing'], [2, 'IT'], [3, 'Production'], 
-                           [4, 'Sales'], [5, 'HR'], [6, 'Go back to previous menu']]
+                           [4, 'Sales'], [5, 'HR']]
             
             for dept in departments:
                 print(f'{dept[0]}. {dept[1]}')
@@ -151,15 +152,24 @@ def update_menu(emp_dict):
                 if dept_col == departments[dept_raise][1]:
                     print(str(key), ' '.join(list(str(emp) for emp in employees[key])))
                     val[5] = int(salary * (1 + raise_pct/100))
-                    print(str(key), ' '.join(list(str(emp) for emp in employees[key])))
+                    print(f'Updated salary: {val[5]}')
+                    #print(str(key), ' '.join(list(str(emp) for emp in employees[key])))
                     
-               
+                    #Confirmation
+                    conf = input('\nConfirm to update the salary (y/n): ')
+                    if conf == 'y':
+                        print('Updated employee data saved to the database\n')
+   
+                    else:
+                        val[5] = salary
+                        continue
+       
         #Go back to main menu
         elif opt == 3:
             break
         
         #Option an integer not in menu
-        elif opt > 3:
+        elif opt > 3 or opt == 0:
             print('Wrong value! Enter an option from the menu: ')
 
 update_menu(emp_dict)

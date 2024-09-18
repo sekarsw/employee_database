@@ -37,3 +37,6 @@ for dict in dict_values:
 
 emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 print(emp_dict)
+
+nums = input('Enter two numbers: ')
+print(nums)
