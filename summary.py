@@ -1,38 +1,29 @@
-#Employees dictionary
-emp_dict = {
-       1001: ['Josh Allen', 'M', 30, 'Senior Staff', 'Production', 50000, 5], 
-       1002: ['Laura Kennedy', 'F', 25, 'Staff', 'Marketing', 35000, 2], 
-       1003: ['Tyler Crosby', 'M', 35, 'Manager', 'IT', 120000, 10], 
-       1004: ['Michael Scott', 'M', 32, 'Engineer', 'IT', 85000, 8], 
-       1005: ['David Williams', 'M', 27, 'Staff', 'Sales', 50000, 3], 
-       1006: ['Alex Kim', 'M', 29, 'Engineer', 'IT', 40000, 3], 
-       1007: ['Michelle Tomlinson', 'F', 31, 'Senior Staff', 'Marketing', 50000, 4], 
-       1008: ['James Smith', 'M', 45, 'Manager', 'Production', 92000, 18], 
-       1009: ['Angelina Lee', 'F', 38, 'Manager', 'Marketing', 80000, 10], 
-       1010: ['Bella Washington', 'F', 24, 'Staff', 'HR', 32000, 1], 
-       1011: ['Wendy Adams', 'F', 29, 'Senior Staff', 'HR', 45000, 5], 
-       1012: ['Tom Benson', 'M', 40, 'Senior Engineer', 'IT', 98000, 12], 
-       1013: ['Michael Brady', 'M', 39, 'Engineer', 'IT', 87000, 9], 
-       1014: ['Katie Brown', 'F', 32, 'Senior Analyst', 'Finance', 78000, 4], 
-       1015: ['Karen Scott', 'F', 34, 'Manager', 'HR', 80000, 10], 
-       1016: ['Natasha Jordan', 'F', 28, 'Analyst', 'Marketing', 48000, 5], 
-       1017: ['Amy Wilde', 'F', 48, 'Manager', 'Finance', 130000, 24], 
-       1018: ['Farah Anissa', 'F', 36, 'Senior Analyst', 'Finance', 75000, 10], 
-       1019: ['Muhammad Idris', 'M', 23, 'Staff', 'Production', 29000, 1], 
-       1020: ['Jason Chen', 'M', 24, 'Engineer', 'IT', 35000, 2], 
-       1021: ['Jamie Jefferson', 'M', 26, 'Staff', 'HR', 30000, 4], 
-       1022: ['Melanie Anderson', 'F', 24, 'Analyst', 'Finance', 28000, 1], 
-       1023: ['Tessa Bailey', 'F', 45, 'Senior Staff', 'Sales', 74000, 17], 
-       1024: ['Eva Madison', 'F', 38, 'Senior Engineer', 'IT', 88000, 12], 
-       1025: ['Hailey Silver', 'F', 40, 'Senior Analyst', 'Finance', 70000, 15], 
-       1026: ['Julia Foster', 'F', 43, 'Senior Analyst', 'Marketing', 68000, 14], 
-       1027: ['Kevin Jones', 'M', 52, 'Manager', 'Sales', 100000, 26], 
-       1028: ['Irene Garner', 'F', 34, 'Senior Staff', 'Sales', 65000, 10], 
-       1029: ['Jennifer Li', 'F', 31, 'Senior Engineer', 'IT', 58000, 7], 
-       1030: ['Diana Torres', 'F', 27, 'Analyst', 'Marketing', 41000, 4]
-       }
+import csv
 
-#Display menu options prompt
+#Create dictionary from csv file
+file = 'employees.csv'
+header = []
+emp_list = []
+
+with open(file, 'r') as f:
+    csv_reader = csv.reader(f)
+    data = list(csv_reader)
+    header = data[0]
+    for row in data[1:]:
+        emp_list.append(row)
+
+
+#Dictionary
+dict_keys = [emp[0] for emp in emp_list]
+dict_values = [emp[1:] for emp in emp_list]
+
+for dict in dict_values:
+    dict[2] = int(dict[2])
+    dict[5] = int(dict[5])
+    dict[6] = int(dict[6])
+emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
+
+#Summary menu options prompt
 summary_prompt = '''
 Display Employee Summary
 1. Display Overall Summary
@@ -40,8 +31,7 @@ Display Employee Summary
 3. Back to Main Menu
 '''
 
-
-def summary_menu(emp_dict=None):
+def summary_menu():
     employees = emp_dict 
     id = [k for k in employees.keys()]
     gender = [val[1] for val in employees.values()] 
@@ -51,8 +41,24 @@ def summary_menu(emp_dict=None):
     salary = [val[5] for val in employees.values()]
     exp = [val[6] for val in employees.values()]
 
+    def dollar(num):
+        num = f"{num:,}"
+        num = f'${num}'
+        return num
+
     def average(col):
-        return (sum(col)//len(col))
+        return sum(col)//len(col) 
+    
+    def median(col):
+        col_sort = sorted(col)
+        n = len(col_sort)
+        mid_id = n//2
+        #If count of data is odd
+        if len(col) % 2 !=1:
+            m = col_sort[mid_id]
+        else:
+            m = (col_sort[mid_id] + col_sort[mid_id - 1])//2
+        return m
 
     def filter_dept(dept=None):
         emp_gender = []
@@ -81,25 +87,30 @@ def summary_menu(emp_dict=None):
         
         #Employee summary menu
         if opt == 1:
-            print('\n====================================')
-            print(f'{'Employee Summary':^30}')
-            print('====================================')
-            print(f'Total Departments: {len(set(dept))}')
+            print('\n========================================')
+            print(f'{'Employee Summary':^35}')
+            print('========================================')
+            print(f'Total Departments {len(set(dept)):>14}')
             print(f'{', '.join(set(dept))}')
             print()
-            print(f'Total Employees: {len(id):>10}')
-            print(f'Male Employees: {gender.count('M'):>11}')
-            print(f'Female Employees: {gender.count('F'):>10}')
+            print(f'Total Employees {len(id):>16}')
+            print(f'Male Employees {gender.count('M'):>17}')
+            print(f'Female Employees {gender.count('F'):>15}')
             print()
-            print(f'Average Age: {average(age)}')
-            print(f'Oldest Employee Age: {max(age)}')
-            print(f'Youngest Employee Age: {min(age)}')
+            print(f'Average Age {(average(age)):>20}')
+            print(f'Oldest Employee Age {max(age):>12}')
+            print(f'Median Employee Age {median(age):>12}')
+            print(f'Youngest Employee Age {min(age):>10}')
             print()
-            print(f'Average Annual Salary: ${average(salary):,}')
-            print(f'Highest Salary: ${max(salary):,}')
-            print(f'Lowest Salary: ${min(salary):,}')
+            print(f'Average Annual Salary {dollar(average(salary)):>10}')
+            print(f'Highest Salary {dollar(max(salary)):>17}')
+            print(f'Median Salary {dollar(median(salary)):>18}')
+            print(f'Lowest Salary {dollar(min(salary)):>18}')
             print()
-            print(f'Average Years of Experience: {average(exp)}')
+            print(f'Average Years of Experience {average(exp):>4}')
+            print(f'Longest Experience {max(exp):>13}')
+            print(f'Median Experience {median(exp):>14}')
+            print(f'Shortest Experience {min(exp):>12}')
 
         #--------------------------------------------------------------------------------------------------------
         #Display Summary by Department Menu
@@ -108,7 +119,9 @@ def summary_menu(emp_dict=None):
             columns = ['Finance', 'Marketing', 'IT', 'Production', 'Sales', 'HR', 'Back to display menu']
 
             #Display menu to input filter category
-            print('Filter Employee Data by ')
+            print('==========================')
+            print('Choose Department')
+            print('==========================')
             for col in list(enumerate(columns, 1)):
                 print(col[0], col[1])
             print()
@@ -178,26 +191,30 @@ def summary_menu(emp_dict=None):
             
             elif opt == 6:
                 print()
-                print('==== ============================')
+                print('==== ===========================')
                 print('Summary of HR Department')
                 print('================================')
 
                 emp_gender, emp_age, emp_salary, emp_exp = filter_dept('HR')
 
-
-            print(f'Total Employees: {len(emp_gender)}')
-            print(f'Male Employees: {emp_gender.count('M'):>11}')
-            print(f'Female Employees: {emp_gender.count('F'):>10}')
+            print(f'Total Employees {len(emp_gender):>16}')
+            print(f'Male Employees {emp_gender.count('M'):>17}')
+            print(f'Female Employees {emp_gender.count('F'):>15}')
             print()
-            print(f'Average Age: {average(emp_age)}')
-            print(f'Oldest Employee Age: {max(emp_age)}')
-            print(f'Youngest Employee Age: {min(emp_age)}')
+            print(f'Average Age {(average(emp_age)):>20}')
+            print(f'Oldest Employee Age {max(emp_age):>12}')
+            print(f'Median Employee Age {median(emp_age):>12}')
+            print(f'Youngest Employee Age {min(emp_age):>10}')
             print()
-            print(f'Average Annual Salary: ${average(emp_salary):,}')
-            print(f'Highest Salary: ${max(emp_salary):,}')
-            print(f'Lowest Salary: ${min(emp_salary):,}')
+            print(f'Average Annual Salary {dollar(average(emp_salary)):>10}')
+            print(f'Highest Salary {dollar(max(emp_salary)):>17}')
+            print(f'Median Salary {dollar(median(emp_salary)):>18}')
+            print(f'Lowest Salary {dollar(min(emp_salary)):>18}')
             print()
-            print(f'Average Years of Experience: {average(emp_exp)}')
+            print(f'Average Years of Experience {average(emp_exp):>4}')
+            print(f'Longest Experience {max(emp_exp):>13}')
+            print(f'Median Experience {median(emp_exp):>14}')
+            print(f'Shortest Experience {min(emp_exp):>12}')
 
         #Go back to main menu
         elif opt == 3:

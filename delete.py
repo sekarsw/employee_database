@@ -34,7 +34,7 @@ def print_header():
     print('------------------------------------------------------------------------------------------------------')  
 
 
-def delete_menu(emp_dict):
+def delete_menu():
     employees = emp_dict
 
     while True:
@@ -47,6 +47,7 @@ def delete_menu(emp_dict):
             opt = int(opt)
         except:
             print('Wrong value! Input must be a number')
+            continue
         
         #Delete employee menu
         if opt == 1:
@@ -90,5 +91,6 @@ def delete_menu(emp_dict):
         
         else:
             print('Wrong value! Enter an option from the menu: ')
+            continue
 
-delete_menu(emp_dict)
+delete_menu()

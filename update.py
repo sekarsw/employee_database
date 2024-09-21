@@ -36,7 +36,7 @@ def print_header():
     print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary':<8} | {'Exp':>4} |')
     print('------------------------------------------------------------------------------------------------------')  
 
-def update_menu(emp_dict):
+def update_menu():
     employees = emp_dict
 
     while True:
@@ -231,4 +231,4 @@ def update_menu(emp_dict):
         elif opt > 3 or opt == 0:
             print('Wrong value! Enter an option from the menu: ')
 
-update_menu(emp_dict)
+update_menu()

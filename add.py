@@ -43,7 +43,7 @@ def print_header():
     print('------------------------------------------------------------------------------------------------------')  
 
 
-def add_menu(emp_dict):
+def add_menu():
     employees = emp_dict
   
     while True:
@@ -139,7 +139,7 @@ def add_menu(emp_dict):
         elif opt == 2:
             break
         
-        else:
+        elif opt > 2 or opt == 0:
             print('Wrong value! Enter an option from the menu: ')
 
-add_menu(emp_dict)
+add_menu()
