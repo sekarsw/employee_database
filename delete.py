@@ -1,36 +1,27 @@
-emp_dict = {
-       1001: ['Josh Allen', 'M', 30, 'Senior Staff', 'Production', 50000, 5], 
-       1002: ['Laura Kennedy', 'F', 25, 'Staff', 'Marketing', 35000, 2], 
-       1003: ['Tyler Crosby', 'M', 35, 'Manager', 'IT', 120000, 10], 
-       1004: ['Michael Scott', 'M', 32, 'Engineer', 'IT', 85000, 8], 
-       1005: ['David Williams', 'M', 27, 'Staff', 'Sales', 50000, 3], 
-       1006: ['Alex Kim', 'M', 29, 'Engineer', 'IT', 40000, 3], 
-       1007: ['Michelle Tomlinson', 'F', 31, 'Senior Staff', 'Marketing', 50000, 4], 
-       1008: ['James Smith', 'M', 45, 'Manager', 'Production', 92000, 18], 
-       1009: ['Angelina Lee', 'F', 38, 'Manager', 'Marketing', 80000, 10], 
-       1010: ['Bella Washington', 'F', 24, 'Staff', 'HR', 32000, 1], 
-       1011: ['Wendy Adams', 'F', 29, 'Senior Staff', 'HR', 45000, 5], 
-       1012: ['Tom Benson', 'M', 40, 'Senior Engineer', 'IT', 98000, 12], 
-       1013: ['Michael Brady', 'M', 39, 'Engineer', 'IT', 87000, 9], 
-       1014: ['Katie Brown', 'F', 32, 'Senior Analyst', 'Finance', 78000, 4], 
-       1015: ['Karen Scott', 'F', 34, 'Manager', 'HR', 80000, 10], 
-       1016: ['Natasha Jordan', 'F', 28, 'Analyst', 'Marketing', 48000, 5], 
-       1017: ['Amy Wilde', 'F', 48, 'Manager', 'Finance', 130000, 24], 
-       1018: ['Farah Anissa', 'F', 36, 'Senior Analyst', 'Finance', 75000, 10], 
-       1019: ['Muhammad Idris', 'M', 23, 'Staff', 'Production', 29000, 1], 
-       1020: ['Jason Chen', 'M', 24, 'Engineer', 'IT', 35000, 2], 
-       1021: ['Jamie Jefferson', 'M', 26, 'Staff', 'HR', 30000, 4], 
-       1022: ['Melanie Anderson', 'F', 24, 'Analyst', 'Finance', 28000, 1], 
-       1023: ['Tessa Bailey', 'F', 45, 'Senior Staff', 'Sales', 74000, 17], 
-       1024: ['Eva Madison', 'F', 38, 'Senior Engineer', 'IT', 88000, 12], 
-       1025: ['Hailey Silver', 'F', 40, 'Senior Analyst', 'Finance', 70000, 15], 
-       1026: ['Julia Foster', 'F', 43, 'Senior Analyst', 'Marketing', 68000, 14], 
-       1027: ['Kevin Jones', 'M', 52, 'Manager', 'Sales', 100000, 26], 
-       1028: ['Irene Garner', 'F', 34, 'Senior Staff', 'Sales', 65000, 10], 
-       1029: ['Jennifer Li', 'F', 31, 'Senior Engineer', 'IT', 58000, 7], 
-       1030: ['Diana Torres', 'F', 27, 'Analyst', 'Marketing', 41000, 4]
-       }
+import csv
 
+#Create dictionary from csv file
+file = 'employees.csv'
+header = []
+emp_list = []
+
+with open(file, 'r', encoding='utf-8-sig') as f:
+    csv_reader = csv.reader(f)
+    data = list(csv_reader)
+    header = data[0]
+    for row in data[1:]:
+        emp_list.append(row)
+
+
+#Dictionary
+dict_keys = [emp[0] for emp in emp_list]
+dict_values = [emp[1:] for emp in emp_list]
+
+for dict in dict_values:
+    dict[2] = int(dict[2])
+    dict[5] = int(dict[5])
+    dict[6] = int(dict[6])
+emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
 #Menu display prompts
 del_prompt = '''
@@ -38,6 +29,9 @@ Delete Employee Menu
 1. Delete Employee
 2. Back to Main Menu
 '''
+def print_header():
+    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary':<8} | {'Exp':>4} |')
+    print('------------------------------------------------------------------------------------------------------')  
 
 
 def delete_menu(emp_dict):
@@ -46,6 +40,7 @@ def delete_menu(emp_dict):
     while True:
         print(del_prompt)
         opt = input('Enter an option: ')
+        print()
 
         #Notification error if opt is a string
         try: 
@@ -55,22 +50,32 @@ def delete_menu(emp_dict):
         
         #Delete employee menu
         if opt == 1:
-            print('Delete Employee\n')
+            print('==========================')
+            print('Delete Employee')
+            print('==========================')
+            print()
+            print('Employee ID = 10XX')
+            print()
+
+            #Input ID to delete
             try:
                 id = int(input('Input Employee ID: '))
+                print()
             except:
                 print('ID needs to be a number')
 
             if id in employees.keys():
-                #Display data
-                '''Need string formatting'''
-                print(str(id), ' '.join(list(str(emp) for emp in employees[id])))
+                #Display data to delete
+                print_header()
+                emp = employees[id]
+                name, gender, age, title, dept, salary, exp = emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6]
+                print(f'| {id} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
 
                 #Confirm deletion
-                resp = input('Confirm to delete the employee data (y/n): ')
+                resp = input('\nConfirm to delete the employee data (y/n): ')
                 if resp == 'y':
                     employees.pop(id)
-                    print('Employee data succesfully deleted.')
+                    print('\nEmployee data succesfully deleted.')
                 else:
                     continue
 
