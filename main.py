@@ -1,7 +1,7 @@
 import csv
 
 #Create dictionary from csv file
-file = 'employees.csv'
+file = 'data/employees.csv'
 emp_list = []
 
 with open(file, 'r') as f:
