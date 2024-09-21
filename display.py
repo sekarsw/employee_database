@@ -1,36 +1,28 @@
-#Employees dictionary
-emp_dict = {
-       1001: ['Josh Allen', 'M', 30, 'Senior Staff', 'Production', 50000, 5], 
-       1002: ['Laura Kennedy', 'F', 25, 'Staff', 'Marketing', 35000, 2], 
-       1003: ['Tyler Crosby', 'M', 35, 'Manager', 'IT', 120000, 10], 
-       1004: ['Michael Scott', 'M', 32, 'Engineer', 'IT', 85000, 8], 
-       1005: ['David Williams', 'M', 27, 'Staff', 'Sales', 50000, 3], 
-       1006: ['Alex Kim', 'M', 29, 'Engineer', 'IT', 40000, 3], 
-       1007: ['Michelle Tomlinson', 'F', 31, 'Senior Staff', 'Marketing', 50000, 4], 
-       1008: ['James Smith', 'M', 45, 'Manager', 'Production', 92000, 18], 
-       1009: ['Angelina Lee', 'F', 38, 'Manager', 'Marketing', 80000, 10], 
-       1010: ['Bella Washington', 'F', 24, 'Staff', 'HR', 32000, 1], 
-       1011: ['Wendy Adams', 'F', 29, 'Senior Staff', 'HR', 45000, 5], 
-       1012: ['Tom Benson', 'M', 40, 'Senior Engineer', 'IT', 98000, 12], 
-       1013: ['Michael Brady', 'M', 39, 'Engineer', 'IT', 87000, 9], 
-       1014: ['Katie Brown', 'F', 32, 'Senior Analyst', 'Finance', 78000, 4], 
-       1015: ['Karen Scott', 'F', 34, 'Manager', 'HR', 80000, 10], 
-       1016: ['Natasha Jordan', 'F', 28, 'Analyst', 'Marketing', 48000, 5], 
-       1017: ['Amy Wilde', 'F', 48, 'Manager', 'Finance', 130000, 24], 
-       1018: ['Farah Anissa', 'F', 36, 'Senior Analyst', 'Finance', 75000, 10], 
-       1019: ['Muhammad Idris', 'M', 23, 'Staff', 'Production', 29000, 1], 
-       1020: ['Jason Chen', 'M', 24, 'Engineer', 'IT', 35000, 2], 
-       1021: ['Jamie Jefferson', 'M', 26, 'Staff', 'HR', 30000, 4], 
-       1022: ['Melanie Anderson', 'F', 24, 'Analyst', 'Finance', 28000, 1], 
-       1023: ['Tessa Bailey', 'F', 45, 'Senior Staff', 'Sales', 74000, 17], 
-       1024: ['Eva Madison', 'F', 38, 'Senior Engineer', 'IT', 88000, 12], 
-       1025: ['Hailey Silver', 'F', 40, 'Senior Analyst', 'Finance', 70000, 15], 
-       1026: ['Julia Foster', 'F', 43, 'Senior Analyst', 'Marketing', 68000, 14], 
-       1027: ['Kevin Jones', 'M', 52, 'Manager', 'Sales', 100000, 26], 
-       1028: ['Irene Garner', 'F', 34, 'Senior Staff', 'Sales', 65000, 10], 
-       1029: ['Jennifer Li', 'F', 31, 'Senior Engineer', 'IT', 58000, 7], 
-       1030: ['Diana Torres', 'F', 27, 'Analyst', 'Marketing', 41000, 4]
-       }
+import csv
+
+#Create dictionary from csv file
+file = 'employees.csv'
+header = []
+emp_list = []
+
+with open(file, 'r', encoding='utf-8-sig') as f:
+    csv_reader = csv.reader(f)
+    data = list(csv_reader)
+    header = data[0]
+    for row in data[1:]:
+        emp_list.append(row)
+
+
+#Dictionary
+dict_keys = [emp[0] for emp in emp_list]
+dict_values = [emp[1:] for emp in emp_list]
+
+#Converting numbers data to integers
+for dict in dict_values:
+    dict[2] = int(dict[2])
+    dict[5] = int(dict[5])
+    dict[6] = int(dict[6])
+emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
 #Display menu options prompt
 display_prompt = '''
@@ -41,9 +33,13 @@ Display Employee Data
 4. Back to Main Menu
 '''
 
-def display_menu(emp_dict = None):
-    employees = emp_dict
+def print_header():
+    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary':<8} | {'Exp':>4} |')
+    print('------------------------------------------------------------------------------------------------------')  
 
+
+def display_menu():
+    employees = emp_dict
 
     while True:
         print(display_prompt)
@@ -58,18 +54,32 @@ def display_menu(emp_dict = None):
             continue
     
         #-----------------------------------------------------------------------------------
+       
         #Display All Data Menu
         if opt == 1:
+            print('========================')
             print('Display All Data')
+            print('========================')
+            print()
+            #Printing Employee Data 
+            print_header()
             for k,v in employees.items():
-                print(k, '      '.join(str(val) for val in list(v)))
-
+                name, gender, age, title, dept, salary, exp = v[0], v[1], v[2], v[3], v[4], v[5], v[6]
+                print(f'| {k} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
+       
+       
         #-------------------------------------------------------------------------------------
+        
         #Display Find Employee by ID Menu
         elif opt == 2:
+            print('=====================')
             print('Find Employee by ID')
+            print('=====================')
+            print()
+
             try:
                 id = int(input('Input Employee ID: '))
+                print()
             except:
                 print('ID must be a number!')
                 continue
@@ -78,7 +88,10 @@ def display_menu(emp_dict = None):
                 print('ID doesn\'t exist')
 
             else:
-               print(str(id), '     '.join(list(str(emp) for emp in employees[id])))
+               print_header()
+               emp = employees[id]
+               name, gender, age, title, dept, salary, exp = emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6]
+               print(f'| {id} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
 
         
         #-------------------------------------------------------------------------------------
@@ -88,8 +101,9 @@ def display_menu(emp_dict = None):
             columns = ['Gender', 'Age', 'Job Title', 'Department', 'Salary', 'Experience', 'Back to display menu']
 
             #Display menu to input filter category
+            print('==========================')
             print('Filter Employee Data')
-            print('--------------------------')
+            print('==========================')
             for col in list(enumerate(columns, 1)):
                 print(col[0], col[1])
 
@@ -97,6 +111,7 @@ def display_menu(emp_dict = None):
             #Error if input is a string
             try:
                 opt = int(input('Choose the category to filter your data: '))
+                print()
             except:
                 print('Wrong value! Must be a number')
                 continue
@@ -113,19 +128,57 @@ def display_menu(emp_dict = None):
             #Choosing filters based on category
             if opt == 1:
                 filter = input('Gender\nM/F: ').upper()
+                print()
+                print(f'Filtered by Gender: {filter}')
+        
             elif opt == 2:
-                filter_min = int(input('Input minimum age: '))
-                filter_max = int(input('Input maximum age: '))
+                try:
+                    filter_min = int(input('Input minimum age: '))
+                    filter_max = int(input('Input maximum age: '))
+                except:
+                    print('Wrong value! Must be a number')
+                    continue
+                print()
+                print(f'Filtered by Age: {filter_min} to {filter_max}')
+                print('Sorted from youngest to oldest')
+          
+
             elif opt == 3:
-                filter = input('Job Title\nManager, Senior Staff, Staff, Engineer, Senior Engineer, Analyst, Senior Analyst\n').title()
+                filter = input('Enter Job Title:\nManager, Senior Staff, Staff, Engineer, Senior Engineer, Analyst, Senior Analyst\n').title()
+                print()
+                print(f'Filtered by Job Title: {filter}')
+                print('Sorted by Salary, highest to lowest')
+            
+
             elif opt == 4: 
-                filter = input('Department\nFinance, Marketing, IT, Production, Sales, HR\n')
+                filter = input('Enter Department Name:\nFinance, Marketing, IT, Production, Sales, HR\n')
+                print()
+                print(f'Filtered by Job Title: {filter}')
+                print('Sorted by Job Title')
+
             elif opt == 5:
-                filter_min = int(input('Input minimum annual salary ($): '))
-                filter_max = int(input('Input maximum annual salary ($): '))
+                try:
+                    filter_min = int(input('Input minimum annual salary ($): '))
+                    filter_max = int(input('Input maximum annual salary ($): '))
+                except:
+                    print('Wrong value! Must be a number')
+                    continue
+                print()
+                print(f'Filtered by Salary: {filter_min} to {filter_max}')
+                print('Sorted from highest to lowest')
+                print()
+
             elif opt == 6: 
-                filter_min = int(input('Input minimum years of experience: '))
-                filter_max = int(input('Input maximum years of experience: '))
+                try:
+                    filter_min = int(input('Input minimum years of experience: '))
+                    filter_max = int(input('Input maximum years of experience: '))
+                except:
+                    print('Wrong value! Must be a number')
+                    continue
+                print()
+                print(f'Filtered by Experience: {filter_min} to {filter_max}')
+                print('Sorted from lowest to highest')
+                print()
 
 
             #Define filtered list
@@ -133,42 +186,48 @@ def display_menu(emp_dict = None):
             #For loop to find filtered data
             for key,val in employees.items():
                 id = key
-                name = val[0]
-                gender = val[1]
-                age = val[2]
-                title = val[3]
-                dept = val[4]
-                salary = val[5]
-                exp = val[6]
+                name, gender, age, title, dept, salary, exp = val[0], val[1], val[2], val[3], val[4], val[5], val[6]
 
                 emp = [id, name, gender, age, title, dept, salary, exp]
                 
                 #Filter by Gender
                 if opt == 1:
                     if gender == filter:
-                        filtered.append(emp)      
+                        filtered.append(emp)  
+                #Filter by Age Group
                 elif opt == 2:
                     if age in range(filter_min, filter_max+1):
-                        filtered.append(emp)
+                        filtered.append(emp) 
+                        #Sort from youngest to oldest
+                        filtered.sort(key = lambda x: x[3])   
+                #Filter by Job Title                   
                 elif opt == 3:
                     if title == filter:
                         filtered.append(emp)
+                        filtered.sort(key = lambda x: x[6], reverse = True)
+                #Filter by Department
                 elif opt == 4:
                     if dept == filter:
                         filtered.append(emp)
+                        filtered.sort(key = lambda x: x[3])
+                #Filter by Salary
                 elif opt == 5:
                     if salary in range(filter_min, filter_max+1):
                         filtered.append(emp)
+                        filtered.sort(key = lambda x: x[6], reverse=True)
+                #Filter by Experience
                 elif opt == 6: 
                     if exp in range(filter_min, filter_max+1):
                         filtered.append(emp)
-
+                        filtered.sort(key = lambda x: x[7], reverse=True) 
                 else:
                     break
-            for data in filtered:
-                print(data)
-            #print(filtered)
-        
+
+            print_header()
+            for emp in filtered:
+                id, name, gender, age, title, dept, salary, exp = emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6], emp[7]
+                print(f'| {id} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
+            
         #-------------------------------------------------------------------------------------
         #Go back to Main Menu
         elif opt == 4:
@@ -179,7 +238,7 @@ def display_menu(emp_dict = None):
             print('Wrong value! Enter an option from the menu: ')
             continue
 
-display_menu(emp_dict)
+display_menu()
 
 
     
