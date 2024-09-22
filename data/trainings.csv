@@ -1,6 +1,6 @@
-﻿Training ID;Topic;Quota;Status;Employee ID
-T1;Leadership;10;Available;1001, 1004, 1006, 1007, 1009, 1020, 1024, 1015
-T2;Data Science;10;Available;1002, 1003, 1010, 1014, 1019
-T3;Computer Skills;8;Completed;1006, 1008, 1021, 1030, 1029, 1026, 1014, 1018
-T4;Safety;10;Completed;1015, 1005, 1001, 1002, 1017, 1016, 1023, 1022, 1007, 1017
-T5;Time Management;8;Completed;1024, 1028, 1026, 1022, 1014, 1017, 1006, 1001
+﻿Training ID;Topic;Quota;Status;Employee ID;;;;;;;;;
+T1;Leadership;10;Available;1001;1004;1006;1007;1009;1020;1024;1015
+T2;Data Science;10;Available;1002;1003;1010;1014;1019
+T3;Computer Skills;8;Open Soon;
+T4;Safety;10;Completed;1015;1005;1001;1002;1017;1016;1023;1022;1007;1017
+T5;Time Management;8;Completed;1024;1028;1026;1022;1014;1017;1006;1001
