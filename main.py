@@ -13,13 +13,18 @@ with open(file, 'r') as f:
 
 
 #Dictionary
+#Employee ID
 dict_keys = [emp[0] for emp in emp_list]
+#Rest of employee data
 dict_values = [emp[1:] for emp in emp_list]
 
+#Convert age, salary, experience to integers
 for dict in dict_values:
     dict[2] = int(dict[2])
     dict[5] = int(dict[5])
     dict[6] = int(dict[6])
+
+#zip to create a tuple for each value in dict_keys and dict_values
 emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
 #----------------------------Import Training Data from CSV------------------------------------------------
@@ -37,8 +42,8 @@ with open(file, 'r') as f:
         train_list.append(rows) 
 
 #Dictionary
-dict_keys = [emp[0] for emp in train_list]
-dict_values = [emp[1:] for emp in train_list]
+dict_keys = [train[0] for train in train_list]
+dict_values = [train[1:] for train in train_list]
 
 for dict in dict_values:
     dict[1] = int(dict[1])
@@ -50,7 +55,7 @@ train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
 
 #Function to add table header -> Employee Database
 def print_header():
-    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary ($)':<8} | {'Exp':>4} |')
+    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary($)':<8}| {'Exp':>3}  |')
     print('------------------------------------------------------------------------------------------------------')  
 
 
@@ -112,7 +117,7 @@ def display_menu():
             print()
 
             try:
-                id = int(input('Input Employee ID: '))
+                id = int(input('Input Employee ID\n(ID = 10XX): '))
                 print()
             except:
                 print('ID must be a number!')
@@ -122,6 +127,7 @@ def display_menu():
                 print('ID doesn\'t exist')
 
             else:
+               print(f'Employee ID: {id}')
                print_header()
                emp = employees[id]
                name, gender, age, title, dept, salary, exp = emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6]
@@ -132,7 +138,7 @@ def display_menu():
         #Filter Employee Data Menu
         elif opt == 3:
             #Define column names
-            columns = ['Gender', 'Age', 'Job Title', 'Department', 'Salary ($)', 'Experience', 'Back to display menu']
+            columns = ['Gender', 'Age', 'Job Title', 'Department', 'Salary $', 'Experience', 'Back to display menu']
 
             #Display menu to input filter category
             print('==========================')
@@ -186,9 +192,10 @@ def display_menu():
 
             elif opt == 4: 
                 filter = input('Enter Department Name:\nFinance, Marketing, IT, Production, Sales, HR\n')
+                filter = filter.title() if len(filter) > 2 else filter.upper()
                 print()
-                print(f'Filtered by Job Title: {filter}')
-                print('Sorted by Job Title')
+                print(f'Filtered by Department: {filter}')
+                print('Sorted by Experience')
 
             elif opt == 5:
                 try:
@@ -211,7 +218,7 @@ def display_menu():
                     continue
                 print()
                 print(f'Filtered by Experience: {filter_min} to {filter_max}')
-                print('Sorted from lowest to highest')
+                print('Sorted from longest to shortest')
                 print()
 
 
@@ -228,22 +235,22 @@ def display_menu():
                 if opt == 1:
                     if gender == filter:
                         filtered.append(emp)  
-                #Filter by Age Group
+                #Filter by Age Group, Sorted by Age
                 elif opt == 2:
                     if age in range(filter_min, filter_max+1):
                         filtered.append(emp) 
                         #Sort from youngest to oldest
                         filtered.sort(key = lambda x: x[3])   
-                #Filter by Job Title                   
+                #Filter by Job Title, Sorted by Salary                  
                 elif opt == 3:
                     if title == filter:
                         filtered.append(emp)
                         filtered.sort(key = lambda x: x[6], reverse = True)
-                #Filter by Department
+                #Filter by Department, Sorted by Experience
                 elif opt == 4:
                     if dept == filter:
                         filtered.append(emp)
-                        filtered.sort(key = lambda x: x[3])
+                        filtered.sort(key = lambda x: x[7], reverse=True)
                 #Filter by Salary
                 elif opt == 5:
                     if salary in range(filter_min, filter_max+1):
@@ -302,12 +309,15 @@ def summary_menu():
     
     #Function to add average
     def average(col):
+        #Sum items in list and divide by number of items in list
         return sum(col)//len(col) 
     
     #Function to calculate median
     def median(col):
+        #Sort the column 
         col_sort = sorted(col)
         n = len(col_sort)
+        #Find the index of the middle value
         mid_id = n//2
         #If count of data is odd
         if len(col) % 2 !=1:
@@ -511,14 +521,14 @@ def add_menu():
 
             #while True:
             try:
-                id = int(input('Insert employee ID (0 to quit): '))
+                id = int(input('Insert employee ID\n(ID = 10XX)\n(0 to quit): '))
                 print()
             except:
                 print('Please enter a number')
                 continue
                 
             if id == 0:
-                break
+                continue
             if id in employees.keys():
                 print('Employee ID already exists! Enter another value')
                 continue
@@ -539,7 +549,6 @@ def add_menu():
                         if resp == 'y':
                             print('The employee is already in the database.')
                             break
-
                     
                     else:
                         try:
@@ -617,7 +626,7 @@ def update_menu():
             print()
 
             try:
-                id = int(input('Input Employee ID: '))
+                id = int(input('Input Employee ID\n(ID = 10XX): '))
             except:
                 print('ID must be a number!')
                 continue
@@ -740,7 +749,7 @@ def update_menu():
                 print('Please enter a number!')
                 continue
 
-
+            #Empty filter list for the employees in the chosen department
             filtered = []
             for id, val in employees.items():
                 #Department column = val[4]
@@ -750,20 +759,25 @@ def update_menu():
                 emp = employees[id]
                 name, gender, age, title, dept, salary, exp = emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], emp[6]
 
+                #Check if department name is equal to input value
                 if dept == columns[dept_raise-1]:
                     print()
                     print_header()
                     print(f'| {id} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
+                    #Updated salary formula
                     upd_salary = int(salary * (1 + raise_pct/100))
                     print(f'Updated salary: {upd_salary}')
-                    #Confirmation
+                    #Confirmation to update salary
+                    #Will check for each employee
                     conf = input('\nConfirm to update the salary (y/n): ')
                     if conf == 'y':
                         salary = upd_salary
                         emp = [id, name, gender, age, title, dept, salary, exp]
+
                         filtered.append(emp)
                         print()
                         print('Updated employee data saved to the database\n')
+                    #To show if employees did not get raise
                     else:
                         emp = [id, name, gender, age, title, dept, salary, exp]
                         filtered.append(emp)
@@ -835,6 +849,7 @@ def delete_menu():
                 #Confirm deletion
                 resp = input('\nConfirm to delete the employee data (y/n): ')
                 if resp == 'y':
+                    #Remove employee
                     employees.pop(id)
                     print('\nEmployee data succesfully deleted.')
                 else:
@@ -895,6 +910,7 @@ def training_menu():
             for k,v in trainings.items():
                 topic, quota, status, emps = v[0], v[1], v[2], v[3]
                 print(f'| {k}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+            print()
 
         #Add Training Program-------------------------------------------------------------------------------
         elif opt == 2:
@@ -904,15 +920,20 @@ def training_menu():
             print('===========================')
             print()
             id = input('Enter training ID\nID format\n(Tx x = number): ').upper()
+            print()
+
+            #Check if training id exist
             if id in trainings.keys():
                 print('ID already exists! Please enter another ID')
                 continue
+            
             else:
                 topic = input('Enter training topic: ')
                 try:
                     quota = int(input('Enter training quota: '))
                 except:
                     print('Wrong value! Please enter a number.')
+                #Check the training program status
                 status = input('Is this program already available for registration? y/n: ').lower()
                 if status == 'y':
                     status = 'Available'
@@ -925,6 +946,7 @@ def training_menu():
                 print()
                 train_header()
                 print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+                print()
 
                 #Confirmation to add datain to the database
                 conf = input('Confirm to input the training program into the database? y/n: ').lower()
@@ -951,6 +973,7 @@ def training_menu():
                 train = trainings[id]
                 topic, quota, status, emps = train[0], train[1], train[2], train[3]
 
+                print()
                 print('Current Data: ')
                 train_header()
                 print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
@@ -1051,24 +1074,32 @@ def training_menu():
                 topic, quota, status, emps = v[0], v[1], v[2], v[3]
                 print(f'| {k}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
 
+            print()
             train_id = input('Enter the training program ID: ').title()
+            print()
 
+            #Check if training id exists
             if train_id in trainings.keys():   
                 train = trainings[train_id]
                 topic, quota, status, emps = train[0], train[1], train[2], train[3]         
 
+                #Notification if training is already completed
                 if status == 'Completed':
                     print('Training already concluded. Please register to another program')
+                #Notification if training is not open for registration
                 elif status == 'Open Soon':
                     print('Registration is not yet open.')
+                #Notification if program is full
                 elif len(emps) == quota:
                     print('This program is already full.')
-
+                #Input employee ID
                 else:
                     try:
                         emp_id = int(input('Enter the employee ID to register to the program\nID format 10XX: '))
+                        print()
                     except:
                         print('Wrong value! Employee ID must be a number')
+                        continue
 
                     #Check if Employee Exist in Employee Database
                     if emp_id in employees.keys():                     
@@ -1078,7 +1109,8 @@ def training_menu():
                             continue
                         else:
                             #Confirm the registration of the employee
-                            conf = input(f'Confirm the registration of employee {emp_id} to training program {train_id}?\ny/n: ').lower()
+                            conf = input(f'Confirm the registration of employee {emp_id} to training program {train_id} {topic}?\ny/n: ').lower()
+                            print()
                             if conf == 'y':
                                 #Append Employee ID to Registered Employees List
                                 emps.append(str(emp_id))
@@ -1115,7 +1147,7 @@ def training_menu():
             if train_id in trainings.keys():   
                 train = trainings[train_id]
                 topic, quota, status, emps = train[0], train[1], train[2], train[3]         
-
+                #Input employee ID
                 try:
                     emp_id = int(input('Enter the employee ID to remove from the program\nID format 10XX: '))
                     print()
@@ -1130,6 +1162,7 @@ def training_menu():
                         print('Employee ID is not registered in this program!')
                         continue
                     else:
+                        #Confirmation to remove employee data
                         conf = input(f'Confirm the removal of employee {emp_id} from the program? y/n :').lower()
                         if conf == 'y':
                             #Remove Employee ID
