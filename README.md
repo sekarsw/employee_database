@@ -25,7 +25,7 @@ The application that I have built to fulfill this requirement is an employee dat
         - `Status`: The status of the training program: Available, Not Open, Completed.
         - `Employee ID`: Shows a list of employees that are registered to the training program.
 
-There are 6 menus defined in this application:
+### Functions
 1. `Display Employee Data` <br>
     The Display menu will show the data of the employees on a table. In this menu, you can choose to display all employee data, find an employee by their ID, and filter employee data by choosing the value you want to filter on. This menu has 3 submenus:
     - Display All Employee Data
