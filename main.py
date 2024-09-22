@@ -50,7 +50,7 @@ train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
 
 #Function to add table header -> Employee Database
 def print_header():
-    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary':<8} | {'Exp':>4} |')
+    print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary ($)':<8} | {'Exp':>4} |')
     print('------------------------------------------------------------------------------------------------------')  
 
 
