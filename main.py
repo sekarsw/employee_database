@@ -1,3 +1,4 @@
+#-----------------------------------Import Employees Data From CSV-----------------------------------------
 import csv
 
 #Create dictionary from csv file
@@ -21,12 +22,43 @@ for dict in dict_values:
     dict[6] = int(dict[6])
 emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
+#----------------------------Import Training Data from CSV------------------------------------------------
+#Create dictionary from csv file
+file = 'data/trainings.csv'
+train_list = []
+
+with open(file, 'r') as f:
+    csv_reader = csv.reader(f, delimiter=';')
+    data = list(csv_reader)
+    for row in data[1:]:
+        id = row[4:]
+        rows = row[0:4]
+        rows.append(id) 
+        train_list.append(rows) 
+
+#Dictionary
+dict_keys = [emp[0] for emp in train_list]
+dict_values = [emp[1:] for emp in train_list]
+
+for dict in dict_values:
+    dict[1] = int(dict[1])
+
+
+train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
+
 #-------------------------------------Supplemental Functions----------------------------------------------
 
-#Function to add table header
+#Function to add table header -> Employee Database
 def print_header():
     print(f'| ID   | {'Name':<20} | {'Gender':<7} | {'Age':<4} | {'Job Title':<15} | {'Department':<15} | {'Salary':<8} | {'Exp':>4} |')
     print('------------------------------------------------------------------------------------------------------')  
+
+
+#Function to add table header -> Training Database
+def train_header():
+    print(f'| ID  | {'Topic':<20} | {'Quota':<7} | {'Status':<10} | {'Registered Employees':<50} | ')
+    print('----------------------------------------------------------------------------------------------------------')  
+
 
 #-----------------------------------Display Menu Function--------------------------------------------------
 #Display menu options prompt
@@ -39,7 +71,6 @@ Display Employee Data
 3. Filter Employee Data
 4. Back to Main Menu
 '''
-
 
 def display_menu():
     employees = emp_dict
@@ -508,8 +539,7 @@ def add_menu():
                         if resp == 'y':
                             print('The employee is already in the database.')
                             break
-                        # else:
-                        #     continue
+
                     
                     else:
                         try:
@@ -536,7 +566,7 @@ def add_menu():
                         conf = input('Confirm to input employee data to database (y/n): ')
                         if conf == 'y':
                         #Insert employee data to dictionary
-                            employees[id] = [name, age, gender, title, dept, salary, exp]
+                            employees[id] = [name, gender, age, title, dept, salary, exp]
 
                             #Display new employee data
                             print('Employee added to database\n')
@@ -724,19 +754,19 @@ def update_menu():
                     print()
                     print_header()
                     print(f'| {id} | {name:<20} | {gender:<7} | {str(age):<4} | {title:<15} | {dept:<15} | {str(salary):>8} | {str(exp):^4} |')
-                    val[5] = int(salary * (1 + raise_pct/100))
-                    print(f'Updated salary: {val[5]}')
-                    salary = val[5]
-                    emp = [id, name, gender, age, title, dept, salary, exp]
-                    filtered.append(emp)
+                    upd_salary = int(salary * (1 + raise_pct/100))
+                    print(f'Updated salary: {upd_salary}')
                     #Confirmation
                     conf = input('\nConfirm to update the salary (y/n): ')
                     if conf == 'y':
+                        salary = upd_salary
+                        emp = [id, name, gender, age, title, dept, salary, exp]
+                        filtered.append(emp)
                         print()
                         print('Updated employee data saved to the database\n')
-                    
                     else:
-                        val[5] = salary
+                        emp = [id, name, gender, age, title, dept, salary, exp]
+                        filtered.append(emp)
                         continue
 
             print()
@@ -823,6 +853,308 @@ def delete_menu():
             print('Wrong value! Enter an option from the menu: ')
             continue
 
+#-----------------------------------Employee Training Menu Function---------------------------------------
+trainings_prompt = '''
+=======================
+Employee Training
+=======================
+1. Display Training List
+2. Add Training Data
+3. Update Training Data
+4. Delete Training Data
+5. Add Employee to Training
+6. Remove Employee from Training
+7. Back to Main Menu
+'''
+
+def training_menu():
+    trainings = train_dict
+    employees = emp_dict
+
+    while True:
+        print(trainings_prompt)
+
+        #Input menu number
+        opt = input('Enter an option: ')
+
+        #Error notification if input is a string
+        try:
+            opt = int(opt)
+        except:
+            print('Wrong value! Input must be a number')
+            continue
+        
+        #Display Training List
+        if opt == 1:
+            print()
+            print('===========================')
+            print('Display Training Data')
+            print('===========================')
+            print()
+            train_header()
+            for k,v in trainings.items():
+                topic, quota, status, emps = v[0], v[1], v[2], v[3]
+                print(f'| {k}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+
+        #Add Training Program-------------------------------------------------------------------------------
+        elif opt == 2:
+            print()
+            print('===========================')
+            print('Add Training Data')
+            print('===========================')
+            print()
+            id = input('Enter training ID\nID format\n(Tx x = number): ').upper()
+            if id in trainings.keys():
+                print('ID already exists! Please enter another ID')
+                continue
+            else:
+                topic = input('Enter training topic: ')
+                try:
+                    quota = int(input('Enter training quota: '))
+                except:
+                    print('Wrong value! Please enter a number.')
+                status = input('Is this program already available for registration? y/n: ').lower()
+                if status == 'y':
+                    status = 'Available'
+                else: 
+                    status = 'Open Soon'
+                #Set employee id as empty list that will be filled by the Add Employee Function
+                emps = []
+
+                #Display the training data
+                print()
+                train_header()
+                print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+
+                #Confirmation to add datain to the database
+                conf = input('Confirm to input the training program into the database? y/n: ').lower()
+                if conf == 'y':
+                    trainings[id] = [topic, quota, status, emps]
+                    print('Training program added into the database.')
+                else:
+                    continue
+                    
+        #Update Training Program------------------------------------------------------------------------------
+        elif opt == 3:
+            print()
+            print('===================')
+            print('Update Training')
+            print('===================')
+            print()
+
+            id = input('Input the training program ID to update\nID format\n(Tx x = number): ').upper()
+            print()
+            
+            
+            if id in trainings.keys():
+                #Display current training data
+                train = trainings[id]
+                topic, quota, status, emps = train[0], train[1], train[2], train[3]
+
+                print('Current Data: ')
+                train_header()
+                print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+
+                while True:
+                    #Display options for the field to update
+                    cols = ['Topic', 'Quota', 'Status', 'Back to Menu']
+                    for col in list(enumerate(cols, 1)):
+                        print(col[0], col[1])
+
+                    #Raise error message if input value is wrong
+                    try:
+                        opt = int(input('Choose the column you want to update: '))
+                        print()
+                    except:
+                        print('Wrong value! Please enter a number from the menu.')
+                        continue
+                    
+                    #Go back to previous men
+                    if opt == 4:
+                        break
+
+                    #Wrong number input
+                    if opt > 4 or opt == 0:
+                        print('Choose a number from the menu!')
+                        continue
+
+                    #Display the field name to change
+                    print(cols[opt-1])
+                    #Input the new data
+                    data = input('Enter the new data: ')
+
+                    print(f'Confirm the change of {cols[opt-1]} value to {data}')
+                    conf = input('y/n: ')
+                    #Change the data to the value chosen
+                    if conf == 'y':                   
+                        #Update Topic
+                        if opt == 1:
+                            topic = data.title()
+                        #Update Quota
+                        elif opt == 2:
+                            quota = int(data)
+                        #Update Status
+                        elif opt == 3:
+                            status = data.title()
+
+                        print()
+                        train_header()
+                        print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+                        print('Data succesfully updated!')
+                    else: 
+                        continue
+
+
+            #Notification if ID doesn't exist
+            else:
+                print('Training ID doesn\'t exist!')
+
+        #Delete Training Program---------------------------------------------------------------------
+        elif opt == 4:
+            print()
+            print('===================')
+            print('Delete Training')
+            print('===================')
+            print()
+            id = input('Input the training program ID to remove\nID format\n(Tx x = number): ').upper()
+            print()
+            if id in trainings.keys():
+                train = trainings[id]
+                topic, quota, status, emps = train[0], train[1], train[2], train[3]
+                #Print data to remove
+                train_header()
+                print(f'| {id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+
+                #Confirm deletion of training data
+                print()
+                conf = input('Confirm to delete this data? y/n: ').lower()
+                if conf == 'y':
+                    trainings.pop(id)
+                    print()
+                    print('Training program removed from the database.')
+                else:
+                    continue
+            else:
+                print('Training ID doesn\'t exist!')
+
+        #Add Employee to a Training--------------------------------------------------
+        elif opt == 5:
+            print()
+            print('================')
+            print('Add Employee')
+            print('================')
+            print()
+            
+            #Display training list
+            train_header()
+            for k,v in trainings.items():
+                topic, quota, status, emps = v[0], v[1], v[2], v[3]
+                print(f'| {k}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+
+            train_id = input('Enter the training program ID: ').title()
+
+            if train_id in trainings.keys():   
+                train = trainings[train_id]
+                topic, quota, status, emps = train[0], train[1], train[2], train[3]         
+
+                if status == 'Completed':
+                    print('Training already concluded. Please register to another program')
+                elif status == 'Open Soon':
+                    print('Registration is not yet open.')
+                elif len(emps) == quota:
+                    print('This program is already full.')
+
+                else:
+                    try:
+                        emp_id = int(input('Enter the employee ID to register to the program\nID format 10XX: '))
+                    except:
+                        print('Wrong value! Employee ID must be a number')
+
+                    #Check if Employee Exist in Employee Database
+                    if emp_id in employees.keys():                     
+                        #Check if Employee ID is already registered
+                        if str(emp_id) in emps:
+                            print('Employee ID already registered!')
+                            continue
+                        else:
+                            #Confirm the registration of the employee
+                            conf = input(f'Confirm the registration of employee {emp_id} to training program {train_id}?\ny/n: ').lower()
+                            if conf == 'y':
+                                #Append Employee ID to Registered Employees List
+                                emps.append(str(emp_id))
+                                #Display Data
+                                train_header()
+                                print(f'| {train_id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+                            else:
+                                continue
+
+                    else:
+                        print('Employee ID doesn\'t exist!')
+
+            else:
+                print('Training ID doesn\'t exist!')
+
+        #Delete Employee From a Training------------------------------------------------------------
+        elif opt == 6:
+            print('================')
+            print('Delete Employee')
+            print('================')
+            print()
+            
+            #Display training list
+            train_header()
+            for k,v in trainings.items():
+                topic, quota, status, emps = v[0], v[1], v[2], v[3]
+                print(f'| {k}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+            print()
+
+            train_id = input('Enter the training program ID: ').upper()
+            print()
+            
+            #Check if training program exists
+            if train_id in trainings.keys():   
+                train = trainings[train_id]
+                topic, quota, status, emps = train[0], train[1], train[2], train[3]         
+
+                try:
+                    emp_id = int(input('Enter the employee ID to remove from the program\nID format 10XX: '))
+                    print()
+                except:
+                    print('Wrong value! Employee ID must be a number')
+                    continue
+
+                #Check if Employee Exist in Employee Database
+                if emp_id in employees.keys():                     
+                    #Check if Employee ID is not registered
+                    if str(emp_id) not in emps:
+                        print('Employee ID is not registered in this program!')
+                        continue
+                    else:
+                        conf = input(f'Confirm the removal of employee {emp_id} from the program? y/n :').lower()
+                        if conf == 'y':
+                            #Remove Employee ID
+                            emps.remove(str(emp_id))
+                            #Display Data
+                            train_header()
+                            print(f'| {train_id}  | {topic:<20} | {str(quota):<7} | {status:<10} | {' '.join(emps):<50} |')
+                        else:
+                            continue
+
+                else:
+                    print('Employee ID doesn\'t exist!')
+                    continue
+
+            else:
+                print('Training ID doesn\'t exist!')
+       
+        #Go back to main menu
+        elif opt == 7:
+            break
+
+        #Notification for invalid integer value
+        else:
+            print('Wrong value! Enter an option from the menu: ')
+
 #-----------------------------------Main Menu Function-----------------------------------------------------
 
 main_prompt = '''
@@ -834,7 +1166,8 @@ Employee Data Main Menu
 3. Add New Employee Data
 4. Updata Employee Data
 5. Delete Employee Data
-6. Close Program
+6. Employee Training 
+7. Close Program
 ''' 
 
 def main_menu():
@@ -845,37 +1178,43 @@ def main_menu():
         #Raise error if input is not an integer
         try:
             option = int(option)
-             #Print error message if option is out of range
-            if option > 6 or option == 0:
-                print('Option out of range! Please enter a number from the menu: ')
-                continue
-
-            #Display Menu
-            elif option == 1:
-                display_menu()
-  
-            #Summary Menu
-            elif option == 2:
-                summary_menu()
-
-            #Create New Employee Menu
-            elif option == 3:
-                add_menu()
-
-            #Update Employee Menu
-            elif option == 4:
-                update_menu()
-
-            #Delete Employee Menu
-            elif option == 5:
-                print('Delete Employee Data')
-
-            #End Program
-            else:
-                break  
-
+               
         except:
             print('Wrong input! Please enter a number') 
+            continue
+
+    #Print error message if option is out of range
+        if option > 7 or option == 0:
+            print('Option out of range! Please enter a number from the menu: ')
+            continue
+
+        #Display Menu
+        elif option == 1:
+            display_menu()
+
+        #Summary Menu
+        elif option == 2:
+            summary_menu()
+
+        #Create New Employee Menu
+        elif option == 3:
+            add_menu()
+
+        #Update Employee Menu
+        elif option == 4:
+            update_menu()
+
+        #Delete Employee Menu
+        elif option == 5:
+            delete_menu()
+
+        #Employee Training Menu
+        elif option == 6:
+            training_menu()
+            
+        #End Program
+        else:
+            break
 
 #Run program
 main_menu()
