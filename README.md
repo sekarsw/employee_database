@@ -3,9 +3,10 @@
 ## Project Overview
 This is the Module 1 Capstone Project for the DTI Data Science Program at Purwadhika Digital School.
 In this project, we are tasked to apply our basic Python knowledge to create an application with CRUD (Create, Read, Update, Delete) features. 
-The application that I have built to fulfill this requirement is an employee database. I utilized basic Python constructs for this project, such as regular functions, for loops, and while loops.
+The application that I have built to fulfill this requirement is an employee database. I utilized basic Python constructs for this project, such as regular functions, for loops, and while loops. The application can be run through the main.py file.
 
 ### Databases
+The databases for this program is located in the data folder. The two databases are as follows: 
 1. Employee Database
     - Fields:
         - `Employee ID`: A unique ID for each employee
