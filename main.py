@@ -1,55 +1,63 @@
+#Dictionary if database csv files are not downloaded
+
+emp_dict = {1001: ['Josh Allen', 'M', 30, 'Senior Staff', 'Production', 50000, 5], 1002: ['Laura Kennedy', 'F', 25, 'Staff', 'Marketing', 35000, 2], 1003: ['Tyler Crosby', 'M', 35, 'Manager', 'IT', 120000, 10], 1004: ['Michael Scott', 'M', 32, 'Engineer', 'IT', 85000, 8], 1005: ['David Williams', 'M', 27, 'Staff', 'Sales', 50000, 3], 1006: ['Alex Kim', 'M', 29, 'Engineer', 'IT', 40000, 3], 1007: ['Michelle Herbert', 'F', 31, 'Senior Staff', 'Marketing', 50000, 4], 1008: ['James Smith', 'M', 45, 'Manager', 'Production', 92000, 18], 1009: ['Angelina Lee', 'F', 38, 'Manager', 'Marketing', 80000, 10], 1010: ['Bella Washington', 'F', 24, 'Staff', 'HR', 32000, 1], 1011: ['Wendy Adams', 'F', 29, 'Senior Staff', 'HR', 45000, 5], 1012: ['Tom Benson', 'M', 40, 'Senior Engineer', 'IT', 98000, 12], 1013: ['Michael Brady', 'M', 39, 'Engineer', 'IT', 87000, 9], 1014: ['Katie Brown', 'F', 32, 'Senior Analyst', 'Finance', 78000, 4], 1015: ['Karen Scott', 'F', 34, 'Manager', 'HR', 80000, 10], 1016: ['Natasha Jordan', 'F', 28, 'Analyst', 'Marketing', 48000, 5], 1017: ['Amy Wilde', 'F', 48, 'Manager', 'Finance', 130000, 24], 1018: ['Farah Anissa', 'F', 36, 'Senior Analyst', 'Finance', 75000, 10], 1019: ['Muhammad Idris', 'M', 23, 'Staff', 'Production', 29000, 1], 1020: ['Jason Chen', 'M', 24, 'Engineer', 'IT', 35000, 2], 1021: ['Jamie Jefferson', 'M', 26, 'Staff', 'HR', 30000, 4], 1022: ['Melanie Anderson', 'F', 24, 'Analyst', 'Finance', 28000, 1], 1023: ['Tessa Bailey', 'F', 45, 'Senior Staff', 'Sales', 74000, 17], 1024: ['Eva Madison', 'F', 38, 'Senior Engineer', 'IT', 88000, 12], 1025: ['Hailey Silver', 'F', 40, 'Senior Analyst', 'Finance', 70000, 15], 1026: ['Julia Foster', 'F', 43, 'Senior Analyst', 'Marketing', 68000, 14], 1027: ['Kevin Jones', 'M', 52, 'Manager', 'Sales', 100000, 26], 1028: ['Irene Garner', 'F', 34, 'Senior Staff', 'Sales', 65000, 10], 1029: ['Jennifer Li', 'F', 31, 'Senior Engineer', 'IT', 58000, 7], 1030: ['Diana Torres', 'F', 27, 'Analyst', 'Marketing', 41000, 4]}
+train_dict = {'T1': ['Leadership', 10, 'Available', ['1001', '1004', '1006', '1007', '1009', '1020', '1024', '1015']], 'T2': ['Data Science', 10, 'Available', ['1002', '1003', '1010', '1014', '1019']], 'T3': ['Computer Skills', 8, 'Open Soon', ['']], 'T4': ['Safety', 10, 'Completed', ['1015', '1005', '1001', '1002', '1017', '1016', '1023', '1022', '1007', '1017']], 'T5': ['Time Management', 8, 'Completed', ['1024', '1028', '1026', '1022', '1014', '1017', '1006', '1001']]}
+
 #-----------------------------------Import Employees Data From CSV-----------------------------------------
-import csv
+#Uncomment the next lines if csv file is downloaded
 
-#Create dictionary from csv file
-file = 'data/employees.csv'
-emp_list = []
+# import csv
 
-with open(file, 'r') as f:
-    csv_reader = csv.reader(f)
-    data = list(csv_reader)
-    for row in data[1:]:
-        emp_list.append(row)
+# #Create dictionary from csv file
+# file = 'data/employees.csv'
+# emp_list = []
+
+# with open(file, 'r') as f:
+#     csv_reader = csv.reader(f)
+#     data = list(csv_reader)
+#     for row in data[1:]:
+#         emp_list.append(row)
 
 
-#Dictionary
-#Employee ID
-dict_keys = [emp[0] for emp in emp_list]
-#Rest of employee data
-dict_values = [emp[1:] for emp in emp_list]
+# #Dictionary
+# #Employee ID
+# dict_keys = [emp[0] for emp in emp_list]
+# #Rest of employee data
+# dict_values = [emp[1:] for emp in emp_list]
 
-#Convert age, salary, experience to integers
-for dict in dict_values:
-    dict[2] = int(dict[2])
-    dict[5] = int(dict[5])
-    dict[6] = int(dict[6])
+# #Convert age, salary, experience to integers
+# for dict in dict_values:
+#     dict[2] = int(dict[2])
+#     dict[5] = int(dict[5])
+#     dict[6] = int(dict[6])
 
-#zip to create a tuple for each value in dict_keys and dict_values
-emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
+# #zip to create a tuple for each value in dict_keys and dict_values
+# emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
 #----------------------------Import Training Data from CSV------------------------------------------------
-#Create dictionary from csv file
-file = 'data/trainings.csv'
-train_list = []
 
-with open(file, 'r') as f:
-    csv_reader = csv.reader(f, delimiter=';')
-    data = list(csv_reader)
-    for row in data[1:]:
-        id = row[4:]
-        rows = row[0:4]
-        rows.append(id) 
-        train_list.append(rows) 
+# #Create dictionary from csv file
+# file = 'data/trainings.csv'
+# train_list = []
 
-#Dictionary
-dict_keys = [train[0] for train in train_list]
-dict_values = [train[1:] for train in train_list]
+# with open(file, 'r') as f:
+#     csv_reader = csv.reader(f, delimiter=';')
+#     data = list(csv_reader)
+#     for row in data[1:]:
+#         id = row[4:]
+#         rows = row[0:4]
+#         rows.append(id) 
+#         train_list.append(rows) 
 
-for dict in dict_values:
-    dict[1] = int(dict[1])
+# #Dictionary
+# dict_keys = [train[0] for train in train_list]
+# dict_values = [train[1:] for train in train_list]
+
+# for dict in dict_values:
+#     dict[1] = int(dict[1])
 
 
-train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
+# train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
 
 #-------------------------------------Supplemental Functions----------------------------------------------
 
