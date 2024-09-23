@@ -34,7 +34,10 @@ train_dict = {'T1': ['Leadership', 10, 'Available', ['1001', '1004', '1006', '10
 # #zip to create a tuple for each value in dict_keys and dict_values
 # emp_dict = {int(k):v for k,v in list(zip(dict_keys, dict_values))}
 
+#Uncomment until previous line
+
 #----------------------------Import Training Data from CSV------------------------------------------------
+#Uncomment next lines if csv file downloaded
 
 # #Create dictionary from csv file
 # file = 'data/trainings.csv'
@@ -58,6 +61,8 @@ train_dict = {'T1': ['Leadership', 10, 'Available', ['1001', '1004', '1006', '10
 
 
 # train_dict = {k:v for k,v in list(zip(dict_keys, dict_values))}
+
+#Uncomment until previous line
 
 #-------------------------------------Supplemental Functions----------------------------------------------
 
